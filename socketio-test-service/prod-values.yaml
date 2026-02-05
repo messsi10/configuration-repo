@@ -1,0 +1,18 @@
+image:
+  repository: smeleshchyk/socketio-test
+  tag: "0.0.2"
+  pullPolicy: IfNotPresent
+
+service:
+  type: NodePort
+  port: 3000
+  nodePort: 30080
+
+replicaCount: 1
+
+
+extraEnv:
+  - name: TEST__LOGIN_VAR
+    value: "login"
+  - name: TEST_PASSWORD_VAR
+    value: "password"
