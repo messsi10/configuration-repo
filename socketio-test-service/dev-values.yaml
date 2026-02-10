@@ -12,6 +12,12 @@ replicaCount: 1
 
 extraEnv:
   - name: TEST__LOGIN_VAR
-    value: "login"
+    valueFrom:
+      secretKeyRef:
+        name: socketio-test-service-env
+        key: TEST__LOGIN_VAR
   - name: TEST_PASSWORD_VAR
-    value: "password"
+    valueFrom:
+      secretKeyRef:
+        name: socketio-test-service-env
+        key: TEST_PASSWORD_VAR

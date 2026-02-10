@@ -1,0 +1,57 @@
+global:
+  enabled: true
+  # Use HTTP inside cluster (dev/test). For production prefer TLS end-to-end.
+  tlsDisable: true
+
+injector:
+  # Not required when using External Secrets Operator (ESO).
+  # Keeping this disabled avoids MutatingWebhookConfiguration caBundle conflicts on upgrades.
+  enabled: false
+
+server:
+  enabled: true
+
+  # Single-node Vault (good for minikube/dev). For HA switch to server.ha.*.
+  standalone:
+    enabled: true
+    config: |
+      ui = true
+
+      listener "tcp" {
+        address     = "0.0.0.0:8200"
+        tls_disable = 1
+      }
+
+      storage "file" {
+        path = "/vault/data"
+      }
+
+      disable_mlock = true
+
+  resources:
+    requests:
+      cpu: 100m
+      memory: 256Mi
+    limits:
+      cpu: 500m
+      memory: 512Mi
+
+  # Expose via ClusterIP by default; put an Ingress/LB in your platform layer if needed.
+  service:
+    type: ClusterIP
+
+  # Vault configuration: integrated storage (Raft)
+  # Note: Vault still requires init + unseal unless you use auto-unseal (KMS).
+  extraEnvironmentVars:
+    VAULT_LOG_LEVEL: "info"
+
+  ha:
+    enabled: false
+
+  dataStorage:
+    enabled: true
+    size: 1Gi
+
+ui:
+  enabled: true
+  serviceType: ClusterIP
