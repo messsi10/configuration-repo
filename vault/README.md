@@ -94,6 +94,26 @@ kubectl -n vault exec -it vault-0 -- vault write auth/kubernetes/role/external-s
   ttl=1h
 ```
 
+If you want **one Vault role for all services** (so you can add keys in Vault UI for any app without changing roles),
+create a single policy + role:
+
+```bash
+kubectl -n vault exec -it vault-0 -- vault policy write eso-read-all -<<'HCL'
+path "kv/data/*" {
+  capabilities = ["read"]
+}
+path "kv/metadata/*" {
+  capabilities = ["read"]
+}
+HCL
+
+kubectl -n vault exec -it vault-0 -- vault write auth/kubernetes/role/external-secrets-any-namespace \
+  bound_service_account_names=external-secrets-vault \
+  bound_service_account_namespaces="*" \
+  policies=eso-read-all \
+  ttl=1h
+```
+
 ### Put secrets into Vault
 
 ```bash
