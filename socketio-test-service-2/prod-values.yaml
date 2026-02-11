@@ -14,10 +14,10 @@ extraEnv:
   - name: TEST__LOGIN_VAR
     valueFrom:
       secretKeyRef:
-        name: socketio-test-service-2-env
+        name: socketio-test-service-2
         key: TEST__LOGIN_VAR
   - name: TEST_PASSWORD_VAR
     valueFrom:
       secretKeyRef:
-        name: socketio-test-service-2-env
+        name: socketio-test-service-2
         key: TEST_PASSWORD_VAR
