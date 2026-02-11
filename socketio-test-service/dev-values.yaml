@@ -21,3 +21,8 @@ extraEnv:
       secretKeyRef:
         name: socketio-test-service-env
         key: TEST_PASSWORD_VAR
+  - name: TEST_TOKEN_VAR
+    valueFrom:
+      secretKeyRef:
+        name: socketio-test-service-env
+        key: TEST_TOKEN_VAR
